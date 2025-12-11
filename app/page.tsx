@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { Phone, Star } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import PremiumCarousel from "./components/PremiumCarousel";
 
@@ -14,6 +15,7 @@ import PremiumCarousel from "./components/PremiumCarousel";
 export default function FraisesLanding() {
   // ---------- CLOUDS ----------
   const cloudsRef = useRef<HTMLCanvasElement>(null);
+  const navi = useRouter();
 
   useEffect(() => {
     const canvas = cloudsRef.current;
@@ -80,6 +82,8 @@ export default function FraisesLanding() {
     }));
 
     function animate() {
+      if (!canvas) return null;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach((p) => {
         p.y -= p.vy;
@@ -150,16 +154,16 @@ export default function FraisesLanding() {
             Căpșuni premium îmbrăcate în ciocolată belgiană, create cu eleganță și atenție la detalii.
           </motion.p>
 
-          <motion.a
-            href="https://wa.me/40758988775"
-            target="_blank"
+          <motion.button
+            onClick={() => {
+              navi.push("/menu");
+            }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             className="mt-10 inline-flex items-center gap-3 px-10 py-5 bg-[#A7747D] text-white rounded-2xl text-xl font-bold shadow-xl hover:shadow-[#A7747D]/50 transition-all"
           >
-            <Phone />
-            Comandă pe WhatsApp
-          </motion.a>
+            Vezi Meniul
+          </motion.button>
 
           {/* STATS */}
           <div className="grid grid-cols-3 gap-6 mt-20">
@@ -209,7 +213,7 @@ export default function FraisesLanding() {
                     <Star key={j} className="w-5 h-5 text-[#A7747D] fill-[#A7747D]" />
                   ))}
                 </div>
-                <p className="text-[#3B2A2F] italic mb-6">"{r.text}"</p>
+                <p className="text-[#3B2A2F] italic mb-6">&ldquo;{r.text}&ldquo;</p>
                 <div className="font-bold text-[#A7747D]">{r.n}</div>
               </motion.div>
             ))}

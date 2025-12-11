@@ -1,0 +1,240 @@
+export const menu = [
+  // coffee
+  {
+    category: "Coffe & Creamy Delights",
+    title: "Espresso",
+    description: "50 ml - Poza produsului este cu caracter informativ.",
+    imageUrl: "https://imageproxy.wolt.com/assets/68949ff527c08002435f5ea2?w=600",
+  },
+  {
+    category: "Coffe & Creamy Delights",
+    title: "Espresso Dublu",
+    description: "100 ml - Poza produsului este cu caracter informativ.",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894a00427c08002435f5ea4?w=600",
+  },
+  {
+    category: "Coffe & Creamy Delights",
+    title: "Cappuccino",
+    description: "130 ml - Poza produsului este cu caracter informativ.",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894a01327c08002435f5eaf?w=600",
+  },
+  {
+    category: "Coffe & Creamy Delights",
+    title: "Caffe Latte",
+    description: "140 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/68946fe927c08002435f33bc?w=600",
+  },
+  {
+    category: "Coffe & Creamy Delights",
+    title: "Americano",
+    description: "110 ml - Poza produsului este cu caracter informativ.",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894a04327c08002435f5ec1?w=600",
+  },
+  {
+    category: "Coffe & Creamy Delights",
+    title: "Lotus Frappe",
+    description: "330 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/68946fd327c08002435f33b4?w=600",
+  },
+  {
+    category: "Coffe & Creamy Delights",
+    title: "Frappe classic",
+    description: "330 ml - Poza produsului este cu caracter informativ.",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894a05a27c08002435f5ecb?w=600",
+  },
+  {
+    category: "Coffe & Creamy Delights",
+    title: "Frappe cu arome",
+    description: "330 ml - Poza produsului este cu caracter informativ",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894a070adc3cb623be2c52a?w=600",
+  },
+
+  // soft drinks
+  {
+    category: "Soft Drinks",
+    title: "Mellow Orange",
+    description: "275 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/68e4fb9867da5fad86952b4a?w=600",
+  },
+  {
+    category: "Soft Drinks",
+    title: "Fentimans Rose Lemonade",
+    description: "275 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/68e4fbc02d43befffd28109e?w=600",
+  },
+  {
+    category: "Soft Drinks",
+    title: "Fentimans Pink Grapefruit",
+    description: "275 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/68e4fbd12d43befffd2810a5?w=600",
+  },
+  {
+    category: "Soft Drinks",
+    title: "Coca-Cola",
+    description: "330 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/689476c327c08002435f35f7?w=600",
+  },
+  {
+    category: "Soft Drinks",
+    title: "San Pellegrino Apǎ Mineralǎ",
+    description: "500 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894a099adc3cb623be2c547?w=600",
+  },
+  {
+    category: "Soft Drinks",
+    title: "San Benedetto Lemon",
+    description: "500 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/68e4fbe667da5fad86952b60?w=600",
+  },
+  {
+    category: "Soft Drinks",
+    title: "San Pellegrino Orange",
+    description: "330 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/68e4fc0567da5fad86952b71?w=600",
+  },
+  {
+    category: "Soft Drinks",
+    title: "Aqua Carpatica",
+    description: "500 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/689476d327c08002435f35ff?w=600",
+  },
+  {
+    category: "Soft Drinks",
+    title: "Limonada Clasica",
+    description: "330 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/68946faf35bd89a245a0fe2b?w=600",
+  },
+  {
+    category: "Soft Drinks",
+    title: "Limonada aromata",
+    description: "330 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/68946fc635bd89a245a0fe39?w=600",
+  },
+
+  //matcha
+  {
+    category: "Matcha Latte",
+    title: "Matcha Clasic",
+    description: "330 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894701fadc3cb623be2a83d?w=600",
+  },
+  {
+    category: "Matcha Latte",
+    title: "Matcha Aromat",
+    description: "330 ml",
+    imageUrl: "https://imageproxy.wolt.com/assets/68947030adc3cb623be2a840?w=600",
+  },
+
+  //boxes
+  {
+    category: "Cutii Cadou",
+    title: "Mini Delice – Box 3 căpșuni",
+    description: "90 g - Căpșuni proaspete, ciocolată belgiană cu diferite arome, decorațiuni speciale",
+    imageUrl: "https://imageproxy.wolt.com/assets/689470ae35bd89a245a0fe7a",
+  },
+  {
+    category: "Cutii Cadou",
+    title: "Douceur Intense – Box 6 căpșuni",
+    description: "210 g -Căpșuni, ciocolată belgiană aromată, decor elegant",
+    imageUrl: "https://imageproxy.wolt.com/assets/68947030adc3cb623be2a840?w=600",
+  },
+  {
+    category: "Cutii Cadou",
+    title: "Choco Passion – Box 9 căpșuni",
+    description: "315 g - Căpșuni, ciocolată belgiană diversificată, decoruri creative",
+    imageUrl: "https://imageproxy.wolt.com/assets/689470f427c08002435f33fe",
+  },
+  {
+    category: "Cutii Cadou",
+    title: "Family box",
+    description: "500 g - 4 sortimente ciocolata, capsuni, afine, zmeura si banane, muffins, marshmellow, briose,(500 g)",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894713cadc3cb623be2a86d",
+  },
+
+  //individual cups
+  {
+    category: "Cupe Individuale",
+    title: "Choco Shot - Pahar mic",
+    description: "130 g - Căpșuni, ciocolată belgiană simplă",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894717827c08002435f344f?w=600",
+  },
+  {
+    category: "Cupe Individuale",
+    title: "Choco Bliss – Pahar mare",
+    description: "200 g - Căpșuni, ciocolată belgiană extra",
+    imageUrl: "https://imageproxy.wolt.com/assets/689471db35bd89a245a0fed0?w=600",
+  },
+
+  //Dubai cups
+
+  {
+    category: "Cupe Dubai Style",
+    title: "Dubai Mini - Pahar mic",
+    description: "180 g - Căpșuni, ciocolată belgiană, kataif crocant",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894717827c08002435f344f?w=600",
+  },
+  {
+    category: "Cupe Dubai Style",
+    title: "Dubai Supreme - Pahar mare",
+    description: "300 g - Căpșuni, ciocolată belgiană, kataif crocant – textură unică",
+    imageUrl: "https://imageproxy.wolt.com/assets/689471db35bd89a245a0fed0?w=600",
+  },
+
+  // Cake pops
+  {
+    category: "Cake Pops",
+    title: "Oreo Choco Delight – Cake pop",
+    description: "60 g - Biscuiți Oreo, mascarpone, ciocolată belgiană (diverse sortimente)",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894734b27c08002435f34d5?w=600",
+  },
+  {
+    category: "Cake Pops",
+    title: "Muffins ciocolată albă",
+    description: "90 g - Făină, zahăr, ouă, sare, extract de vanilie, ciocolată belgiană albă",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894739635bd89a245a0ff51?w=600",
+  },
+  {
+    category: "Cake Pops",
+    title: "Muffins ciocolată neagră",
+    description: "90 g - Făină, zahăr, ouă, sare, extract de vanilie, ciocolată belgiană neagră",
+    imageUrl: "https://imageproxy.wolt.com/assets/689475da27c08002435f357c?w=600",
+  },
+  {
+    category: "Cake Pops",
+    title: "Inimǎ Dubai",
+    description: "50 g - Ciocolată belgiană, zmeură, cremă de fistic, cataif",
+    imageUrl: "https://imageproxy.wolt.com/assets/689473c635bd89a245a0ff56?w=600",
+  },
+  {
+    category: "Cake Pops",
+    title: "Croissant Dubai",
+    description: "110 g - Făină de grâu, unt, apă, zahăr, drojdie, gluten, ouă, sare, poate conține urme de soia",
+    imageUrl: "https://imageproxy.wolt.com/assets/689473ecadc3cb623be2a941?w=600",
+  },
+  {
+    category: "Cake Pops",
+    title: "Brownie",
+    description:
+      "65 g - Ulei vegetal, ouă, făină de grâu, zahăr, smântână, nuci, sirop de glucoză-fructoză, lapte praf degresat, emulgatori, agenți de afânare și stabilizatori",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894744535bd89a245a0ff61?w=600",
+  },
+
+  {
+    category: "Cake Pops",
+    title: "Oreo cheesecake",
+    description: "120 g - Biscuiți Oreo, mascarpone, frișcă lichidă, zahăr pudră",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894746d27c08002435f350a?w=600",
+  },
+  {
+    category: "Cake Pops",
+    title: "Tableta ciocolată mică",
+    description: "40 g - Cocolată albă, oleaginoase",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894749027c08002435f3513?w=600",
+  },
+  {
+    category: "Cake Pops",
+    title: "Ciocolata Oreo",
+    description: "50 g - Ciocolată, Oreo",
+    imageUrl: "https://imageproxy.wolt.com/assets/6894744535bd89a245a0ff61?w=600",
+  },
+];
