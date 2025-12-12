@@ -1,19 +1,18 @@
 "use client";
+
 import { motion } from "framer-motion";
-import { Phone, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
+import Footer from "./components/Footer";
+import Gallery from "./components/Gallery";
 import PremiumCarousel from "./components/PremiumCarousel";
-
-/*  COLOR THEME
-    Primary: #A7747D (rose gold chocolate)
-    Accent: #E8D0D4 (soft cream)
-    Dark: #3B2A2F
-*/
+import Story from "./components/Story";
+import { menu } from "./data/data";
 
 export default function FraisesLanding() {
-  // ---------- CLOUDS ----------
+  const productsPremium = menu.filter((p) => ["Cutii Cadou", "Cupe Individuale", "Cake Pops"].includes(p.category));
   const cloudsRef = useRef<HTMLCanvasElement>(null);
   const navi = useRouter();
 
@@ -47,11 +46,11 @@ export default function FraisesLanding() {
         c.x += c.speed;
         if (c.x - c.size > canvas.width) c.x = -c.size;
 
-        const gradient = ctx.createRadialGradient(c.x, c.y, 20, c.x, c.y, c.size);
-        gradient.addColorStop(0, `rgba(255,255,255,${c.opacity})`);
-        gradient.addColorStop(1, "rgba(255,255,255,0)");
+        const linear = ctx.createRadialGradient(c.x, c.y, 20, c.x, c.y, c.size);
+        linear.addColorStop(0, `rgba(255,255,255,${c.opacity})`);
+        linear.addColorStop(1, "rgba(255,255,255,0)");
 
-        ctx.fillStyle = gradient;
+        ctx.fillStyle = linear;
         ctx.beginPath();
         ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2);
         ctx.fill();
@@ -63,7 +62,6 @@ export default function FraisesLanding() {
     draw();
   }, []);
 
-  // ---------- PARTICLES ----------
   const particlesRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = particlesRef.current;
@@ -100,47 +98,41 @@ export default function FraisesLanding() {
   }, []);
 
   return (
-    <main className="relative overflow-hidden bg-gradient-to-b from-[#E8D0D4] via-white to-[#F8EEF0] text-[#3B2A2F]">
-      {/* CLOUDS */}
+    <main className="relative overflow-hidden bg-linear-to-b from-[#E8D0D4] via-white to-[#F8EEF0] text-[#3B2A2F]">
       <canvas ref={cloudsRef} className="fixed inset-0 z-0 pointer-events-none opacity-[0.55]" />
 
-      {/* PARTICLES */}
       <canvas ref={particlesRef} className="fixed inset-0 z-0 pointer-events-none opacity-30" />
 
-      {/* ---------- LUXURY CURTAINS ---------- */}
       <motion.div
         initial={{ x: 0 }}
         animate={{ x: "-120%" }}
         transition={{ duration: 2.2, ease: [0.25, 0.1, 0.25, 1] }}
-        className="fixed top-0 left-0 w-[55vw] h-full z-20 bg-gradient-to-r from-[#A7747D] to-[#82535C] shadow-2xl"
+        className="fixed top-0 left-0 w-[55vw] h-full z-20 bg-linear-to-r from-[#A7747D] to-[#82535C] shadow-2xl"
       />
 
       <motion.div
         initial={{ x: 0 }}
         animate={{ x: "120%" }}
         transition={{ duration: 2.2, ease: [0.25, 0.1, 0.25, 1] }}
-        className="fixed top-0 right-0 w-[55vw] h-full z-20 bg-gradient-to-l from-[#A7747D] to-[#82535C] shadow-2xl"
+        className="fixed top-0 right-0 w-[55vw] h-full z-20 bg-linear-to-l from-[#A7747D] to-[#82535C] shadow-2xl"
       />
 
-      {/* CONTENT */}
       <div className="relative z-10">
-        {/* HEADER */}
         <header className="py-8 px-6 flex  justify-center">
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center gap-3">
             <Image src="/fraises.jpeg" width={70} height={70} alt="logo" className="rounded-full shadow-2xl ring-4 ring-white/40" />
-            <h1 className="text-3xl text-center font-black bg-gradient-to-r from-[#A7747D] to-[#7C5A60] bg-clip-text text-transparent drop-shadow-lg">
+            <h1 className="text-3xl text-center font-black bg-linear-to-r from-[#A7747D] to-[#7C5A60] bg-clip-text text-transparent drop-shadow-lg">
               Fraises au Chocolat Bacău
             </h1>
           </motion.div>
         </header>
 
-        {/* HERO */}
         <section className="text-center px-6 pt-24 pb-32 max-w-4xl mx-auto relative">
           <motion.h2
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1 }}
-            className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#A7747D] via-[#C48A94] to-[#7C5A60] drop-shadow-[0_0_20px_rgba(200,150,150,0.3)]"
+            className="text-7xl font-black text-transparent bg-clip-text bg-linear-to-r from-[#A7747D] via-[#C48A94] to-[#7C5A60] drop-shadow-[0_0_20px_rgba(200,150,150,0.3)]"
           >
             Artă în Ciocolată
           </motion.h2>
@@ -165,8 +157,7 @@ export default function FraisesLanding() {
             Vezi Meniul
           </motion.button>
 
-          {/* STATS */}
-          <div className="grid grid-cols-3 gap-6 mt-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-20">
             {[
               { n: "900+", label: "Clienți fericiți" },
               { n: "100%", label: "Ingrediente Premium" },
@@ -177,21 +168,22 @@ export default function FraisesLanding() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.2 }}
-                className="bg-white/70 backdrop-blur-xl p-6 rounded-2xl shadow-md"
+                className="bg-white/70 backdrop-blur-xl p-6 rounded-2xl shadow-md text-center"
               >
-                <div className="text-3xl font-black text-[#A7747D]">{s.n}</div>
-                <div className="text-sm text-[#3B2A2F]/60">{s.label}</div>
+                <div className="text-4xl font-black text-[#A7747D]">{s.n}</div>
+                <div className="text-base text-[#3B2A2F]/60">{s.label}</div>
               </motion.div>
             ))}
           </div>
         </section>
 
-        {/* PRODUCT CAROUSEL */}
         <PremiumCarousel />
 
-        {/* REVIEWS */}
+        <Story />
+        <Gallery data={productsPremium} />
+
         <section className="py-32 px-6">
-          <h2 className="text-center text-5xl font-black mb-16 text-transparent bg-clip-text bg-gradient-to-r from-[#A7747D] to-[#7C5A60]">
+          <h2 className="text-center text-5xl font-black mb-16 text-transparent bg-clip-text bg-linear-to-r from-[#A7747D] to-[#7C5A60]">
             Recenzii
           </h2>
 
@@ -220,34 +212,7 @@ export default function FraisesLanding() {
           </div>
         </section>
 
-        {/* LOCATION */}
-        <section className="py-24 px-6 bg-[#F8EEF0] text-[#3B2A2F]">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#A7747D] to-[#7C5A60]">
-              Unde ne găsești
-            </h2>
-
-            <p className="text-lg">
-              📍 <strong>Adresa:</strong> 22 Decembrie nr. 113, Bacău
-            </p>
-            <p className="text-lg">
-              📞 <strong>Telefon:</strong> 0758 988 775
-            </p>
-
-            <a
-              href="https://wa.me/40758988775"
-              target="_blank"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-[#A7747D] text-white rounded-2xl font-bold shadow-lg hover:shadow-[#A7747D]/50 transition-all"
-            >
-              <Phone /> Scrie-ne pe WhatsApp
-            </a>
-          </div>
-        </section>
-
-        {/* FOOTER */}
-        <footer className="py-12 bg-[#A7747D] text-white text-center">
-          <p className="font-semibold tracking-wide">© {new Date().getFullYear()} Fraises au Chocolat Bacău</p>
-        </footer>
+        <Footer />
       </div>
     </main>
   );

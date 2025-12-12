@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { menu } from "../data/data";
@@ -79,7 +80,7 @@ const PremiumCarousel = () => {
             <div key={i} className="snap-center flex-shrink-0 group" style={{ width: `${CARD_WIDTH}px` }}>
               <div className="bg-white rounded-3xl shadow-xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-4">
                 {/* Product Image */}
-                <img src={product.imageUrl} alt={product.title} className="w-full h-48 object-cover" />
+                <Image src={product.imageUrl} alt={product.title} className="w-full h-48 object-cover" width={600} height={600} />
                 <div className="p-6 flex flex-col justify-between h-56">
                   <h3 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#A7747D] to-[#7C5A60] mb-2">
                     {product.title}
@@ -101,7 +102,7 @@ const PremiumCarousel = () => {
 
         {/* Dots */}
         <div className="flex justify-center gap-3 mt-10">
-          {productsPremium.map((_, i) => (
+          {Array.from({ length: 5 }).map((_, i) => (
             <button
               key={i}
               onClick={() => scrollToIndex(i)}
