@@ -1,9 +1,10 @@
 "use client";
 
-import { ArrowLeft, ArrowUp, Phone, ShoppingCart } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowLeft, Minus, Phone, Plus, ShoppingCart, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CategoryCarousel from "../components/CategoryCarousel";
 import Footer from "../components/Footer";
 import { menu } from "../data/data";
@@ -11,7 +12,15 @@ import { menu } from "../data/data";
 export default function MenuPage() {
   const [selected, setSelected] = useState<{ [key: string]: number }>({});
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
+
+  // Detect scroll pentru header compact
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const addProduct = (title: string) => {
     setSelected((prev) => ({ ...prev, [title]: (prev[title] || 0) + 1 }));
@@ -27,7 +36,8 @@ export default function MenuPage() {
     });
   };
 
-  const totalItems = Object.entries(selected).reduce(
+  const totalItemsCount = Object.values(selected).reduce((a, b) => a + b, 0);
+  const totalPrice = Object.entries(selected).reduce(
     (sum, [title, qty]) => sum + (menu.find((p) => p.title === title)?.price || 0) * qty,
     0
   );
@@ -39,182 +49,205 @@ export default function MenuPage() {
         return `${qty} x ${title} - ${price * qty} RON`;
       })
       .join("%0A");
-    const url = `https://wa.me/40758988775?text=Buna ziua!%20Aș dori să comand:%0A${itemsText}%0ATotal: ${totalItems} RON`;
+    const url = `https://wa.me/40758988775?text=Buna ziua!%20Aș dori să comand de pe site:%0A${itemsText}%0A%0ATotal: ${totalPrice} RON`;
     window.open(url, "_blank");
   };
 
   const categories = Array.from(new Set(menu.map((p) => p.category)));
 
-  const scrollToCategory = (cat: string) => {
-    const el = document.getElementById(cat);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
-    <>
-      <main className="relative min-h-screen bg-gradient-to-b from-[#E8D0D4] via-white to-[#F8EEF0] text-[#3B2A2F] pb-24">
-        <div className="max-w-7xl mx-auto px-4 py-8 md:py-16">
-          <div className="relative mb-8 md:mb-6">
-            <button
-              onClick={() => router.replace("/")}
-              className="fixed md:absolute top-4 left-4 md:top-0 md:left-0 z-50 bg-[#A7747D] text-white w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2 rounded-full md:rounded-xl font-bold shadow-lg hover:shadow-[#A7747D]/50 transition-all flex items-center justify-center md:gap-2"
-            >
-              <ArrowLeft />
-              <span className="hidden md:inline">Înapoi</span>
-            </button>
+    <main className="min-h-screen bg-[#FFFDFD] text-[#1A1A1A]">
+      {/* 1. HEADER DINAMIC */}
+      <header
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+          scrolled ? "bg-white/80 backdrop-blur-md py-4 shadow-sm" : "bg-transparent py-8"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+          <button onClick={() => router.replace("/")} className="flex items-center gap-2 group text-sm font-bold uppercase tracking-widest">
+            <div className="w-10 h-10 rounded-full bg-[#F9C9C9]/20 flex items-center justify-center group-hover:bg-[#F9C9C9] transition-colors">
+              <ArrowLeft size={18} />
+            </div>
+            <span className="hidden md:block">Înapoi</span>
+          </button>
 
-            <h1 className="text-3xl md:text-5xl text-center font-black bg-gradient-to-r from-[#A7747D] to-[#7C5A60] bg-clip-text text-transparent drop-shadow-lg px-4">
-              Meniu Fraises au Chocolat
-            </h1>
+          <div className="text-center">
+            <h1 className="font-serif italic text-2xl md:text-3xl">Meniul Nostru</h1>
+            <div className="h-0.5 w-12 bg-[#F9C9C9] mx-auto mt-1" />
           </div>
 
-          <CategoryCarousel categories={categories} scrollToCategory={scrollToCategory} />
-
-          {categories.map((cat) => (
-            <section key={cat} id={cat} className="mb-12">
-              <h2 className="text-3xl font-black text-[#A7747D] mb-6">{cat}</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {menu
-                  .filter((p) => p.category === cat)
-                  .map((product) => (
-                    <div
-                      key={product.title}
-                      className="rounded-3xl overflow-hidden shadow-xl flex flex-col justify-between transform hover:-translate-y-1 hover:shadow-[#A7747D]/30 transition-all bg-gradient-to-br from-[#A7747D] to-[#7C5A60]"
-                    >
-                      <Image src={product.imageUrl} alt={product.title} className="h-48 w-full object-cover" width={600} height={600} />
-                      <div className="p-4 md:p-6 flex flex-col justify-between h-auto text-white">
-                        <h3 className="text-xl md:text-2xl font-black mb-1 drop-shadow-lg">{product.title}</h3>
-                        <p className="text-sm opacity-90 drop-shadow mb-2">{product.description}</p>
-                        <p className="text-lg font-bold mb-3">{product.price} RON</p>
-                        <div className="flex gap-3 items-center mt-auto justify-end">
-                          <button
-                            onClick={() => removeProduct(product.title)}
-                            className="bg-white/30 text-white w-8 h-8 rounded-full hover:bg-white/50 transition font-bold text-lg"
-                          >
-                            -
-                          </button>
-                          <span className="w-8 text-center text-lg font-black bg-white/10 rounded-lg py-1">
-                            {selected[product.title] || 0}
-                          </span>
-                          <button
-                            onClick={() => addProduct(product.title)}
-                            className="bg-white text-[#A7747D] w-8 h-8 font-bold rounded-full hover:shadow-xl transition text-lg"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </section>
-          ))}
-        </div>
-
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-4 left-4 z-40 bg-[#A7747D] text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center font-black text-lg transition-all hover:scale-110"
-        >
-          <ArrowUp className="w-6 h-6" />
-        </button>
-
-        {!Object.keys(selected).length ? null : (
-          <>
-            <button
-              onClick={() => setIsCartOpen(true)}
-              className="md:hidden fixed bottom-4 right-4 z-40 bg-[#A7747D] text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center font-black text-lg transition-all transform hover:scale-110"
-            >
-              <ShoppingCart className="w-6 h-6" />
-              {Object.values(selected).reduce((a, b) => a + b, 0) > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
-                  {Object.values(selected).reduce((a, b) => a + b, 0)}
+          <div className="relative">
+            <button onClick={() => setIsCartOpen(true)} className="relative p-2 hover:scale-110 transition-transform">
+              <ShoppingCart size={24} />
+              {totalItemsCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-[#1A1A1A] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                  {totalItemsCount}
                 </span>
               )}
             </button>
+          </div>
+        </div>
+      </header>
 
-            <div className="hidden lg:block fixed top-24 right-4 w-80 bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-6 flex flex-col gap-4 border border-white/20 z-30">
-              <h3 className="text-2xl font-bold text-[#A7747D] mb-4">Coșul tău</h3>
-              <div className="flex flex-col gap-3 max-h-[60vh] overflow-y-auto pr-2">
-                {Object.entries(selected).map(([title, qty]) => (
-                  <div key={title} className="flex justify-between items-center text-[#3B2A2F] border-b pb-2 last:border-b-0">
-                    <span className="text-sm font-semibold">{title}</span>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => removeProduct(title)}
-                        className="bg-[#3B2A2F]/10 px-2 rounded-full hover:bg-[#3B2A2F]/20 transition text-sm"
-                      >
-                        -
-                      </button>
-                      <span className="text-base font-black w-6 text-center">{qty}</span>
-                      <button
-                        onClick={() => addProduct(title)}
-                        className="bg-[#A7747D] text-white font-bold px-2 rounded-full hover:opacity-90 transition text-sm"
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <button
-                onClick={orderOnWhatsApp}
-                className="mt-4 w-full bg-[#A7747D] text-white px-4 py-3 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg hover:shadow-[#A7747D]/50 transition-all"
-              >
-                <Phone className="w-5 h-5" /> Comandă pe WhatsApp ({totalItems} RON)
-              </button>
+      {/* 2. CATEGORY SELECTOR */}
+      <div className="pt-32 pb-10">
+        <CategoryCarousel
+          categories={categories}
+          scrollToCategory={(cat) => {
+            document.getElementById(cat)?.scrollIntoView({ behavior: "smooth", block: "center" });
+          }}
+        />
+      </div>
+
+      {/* 3. PRODUCT GRID */}
+      <div className="max-w-7xl mx-auto px-6 pb-32">
+        {categories.map((cat) => (
+          <section key={cat} id={cat} className="mb-20 scroll-mt-32">
+            <div className="flex items-center gap-4 mb-10">
+              <h2 className="text-2xl font-bold uppercase tracking-[0.3em] text-[#A7747D]">{cat}</h2>
+              <div className="h-[1px] flex-1 bg-pink-100" />
             </div>
 
-            <div
-              className={`fixed inset-0 z-50 transition-transform duration-300 transform lg:hidden ${
-                isCartOpen ? "translate-y-0" : "translate-y-full"
-              }`}
-            >
-              <div className="absolute inset-0 bg-black/50" onClick={() => setIsCartOpen(false)} />
-              <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl p-6 flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
-                <h3 className="text-3xl font-bold text-[#A7747D] mb-4 border-b pb-2 flex justify-between items-center">
-                  Coșul tău
-                  <button onClick={() => setIsCartOpen(false)} className="text-[#3B2A2F] text-2xl font-light">
-                    &times;
-                  </button>
-                </h3>
-                <div className="flex flex-col gap-4">
-                  {Object.entries(selected).map(([title, qty]) => (
-                    <div key={title} className="flex justify-between items-center text-[#3B2A2F] border-b pb-3">
-                      <span className="text-base font-semibold">{title}</span>
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={() => removeProduct(title)}
-                          className="bg-[#3B2A2F]/10 w-8 h-8 rounded-full hover:bg-[#3B2A2F]/20 transition text-base font-bold"
-                        >
-                          -
-                        </button>
-                        <span className="text-xl font-black w-6 text-center">{qty}</span>
-                        <button
-                          onClick={() => addProduct(title)}
-                          className="bg-[#A7747D] text-white w-8 h-8 font-bold rounded-full hover:opacity-90 transition text-base"
-                        >
-                          +
-                        </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {menu
+                .filter((p) => p.category === cat)
+                .map((product) => (
+                  <motion.div
+                    key={product.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="group"
+                  >
+                    <div className="relative aspect-square rounded-[2rem] overflow-hidden mb-6 bg-gray-50">
+                      <Image
+                        src={product.imageUrl}
+                        alt={product.title}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      {/* Overlay la hover */}
+                      <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-start">
+                        <h3 className="text-xl font-bold tracking-tight">{product.title}</h3>
+                        <span className="font-serif italic text-lg text-[#A7747D]">{product.price} RON</span>
+                      </div>
+                      <p className="text-gray-400 text-sm leading-relaxed font-light line-clamp-2">{product.description}</p>
+
+                      <div className="pt-4 flex items-center justify-between">
+                        {/* Quantity Selector Modern */}
+                        <div className="flex items-center bg-[#F9C9C9]/10 rounded-full p-1 border border-[#F9C9C9]/20">
+                          <button
+                            onClick={() => removeProduct(product.title)}
+                            className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white transition-colors"
+                          >
+                            <Minus size={14} />
+                          </button>
+                          <span className="w-10 text-center font-bold text-sm">{selected[product.title] || 0}</span>
+                          <button
+                            onClick={() => addProduct(product.title)}
+                            className="w-8 h-8 rounded-full bg-[#1A1A1A] text-white flex items-center justify-center hover:bg-[#A7747D] transition-colors"
+                          >
+                            <Plus size={14} />
+                          </button>
+                        </div>
+
+                        {!selected[product.title] && (
+                          <button
+                            onClick={() => addProduct(product.title)}
+                            className="text-[10px] font-bold uppercase tracking-widest text-[#A7747D] border-b border-[#F9C9C9] pb-1"
+                          >
+                            Adaugă în coș
+                          </button>
+                        )}
                       </div>
                     </div>
-                  ))}
-                </div>
-                <button
-                  onClick={orderOnWhatsApp}
-                  className="mt-6 w-full bg-[#A7747D] text-white px-4 py-3 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg hover:shadow-[#A7747D]/50 transition-all text-lg"
-                >
-                  <Phone className="w-6 h-6" /> Finalizează comanda ({totalItems} RON)
+                  </motion.div>
+                ))}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      {/* 4. MODAL COȘ (SIDEBAR) */}
+      <AnimatePresence>
+        {isCartOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsCartOpen(false)}
+              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[60]"
+            />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-[70] shadow-2xl p-8 flex flex-col"
+            >
+              <div className="flex justify-between items-center mb-10">
+                <h3 className="font-serif italic text-3xl">Coșul tău</h3>
+                <button onClick={() => setIsCartOpen(false)} className="p-2 hover:rotate-90 transition-transform">
+                  <X size={24} />
                 </button>
               </div>
-            </div>
+
+              <div className="flex-1 overflow-y-auto space-y-6 pr-2 custom-scrollbar">
+                {Object.entries(selected).length === 0 ? (
+                  <div className="text-center py-20">
+                    <p className="text-gray-400 italic">Coșul este gol...</p>
+                  </div>
+                ) : (
+                  Object.entries(selected).map(([title, qty]) => {
+                    const product = menu.find((p) => p.title === title);
+                    return (
+                      <div key={title} className="flex gap-4 items-center">
+                        <div className="w-20 h-20 rounded-2xl overflow-hidden relative flex-shrink-0">
+                          <Image src={product?.imageUrl || ""} alt={title} fill className="object-cover" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-bold text-sm uppercase tracking-tight">{title}</h4>
+                          <p className="text-[#A7747D] font-serif italic">{product?.price} RON</p>
+                        </div>
+                        <div className="flex items-center gap-3 bg-gray-50 rounded-full px-3 py-1">
+                          <button onClick={() => removeProduct(title)}>
+                            <Minus size={12} />
+                          </button>
+                          <span className="font-bold text-sm w-4 text-center">{qty}</span>
+                          <button onClick={() => addProduct(title)}>
+                            <Plus size={12} />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              <div className="mt-8 pt-8 border-t border-pink-50">
+                <div className="flex justify-between items-end mb-6">
+                  <span className="text-gray-400 uppercase text-[10px] font-bold tracking-widest">Total de plată</span>
+                  <span className="text-3xl font-serif italic">{totalPrice} RON</span>
+                </div>
+                <button
+                  disabled={totalPrice === 0}
+                  onClick={orderOnWhatsApp}
+                  className="w-full bg-[#1A1A1A] text-white py-6 rounded-full font-bold uppercase text-[11px] tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-[#A7747D] transition-colors disabled:opacity-50 disabled:bg-gray-200 shadow-xl shadow-pink-100"
+                >
+                  <Phone size={16} /> Finalizează pe WhatsApp
+                </button>
+              </div>
+            </motion.div>
           </>
         )}
-      </main>
+      </AnimatePresence>
+
       <Footer />
-    </>
+    </main>
   );
 }

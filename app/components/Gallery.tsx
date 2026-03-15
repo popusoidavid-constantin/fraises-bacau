@@ -16,10 +16,6 @@ export default function Gallery({ data }: { data: Product[] }) {
 
   return (
     <section className="py-32 px-6 bg-white">
-      <h2 className="text-center text-5xl font-black mb-16 text-transparent bg-clip-text bg-gradient-to-r from-[#A7747D] to-[#7C5A60]">
-        Galerie
-      </h2>
-
       <div className="columns-2 md:columns-3 gap-4 space-y-4 max-w-6xl mx-auto">
         {photos.map((p, i) => (
           <motion.div
